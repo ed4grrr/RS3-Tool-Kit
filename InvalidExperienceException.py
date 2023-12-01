@@ -1,0 +1,2 @@
+class InvalidExperienceException(Exception):
+    pass
