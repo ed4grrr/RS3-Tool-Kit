@@ -168,14 +168,16 @@ def count_xp_items(current_level, current_experience, target_xp, skill_dict, ite
     return number_of_xp_items,xp_gained
 
 
-#print(len(data["experience"]))
-#print(len(data["level"]))
 
-number_required,xp_gained,missing_experience,xp_gained_missing_experience = determine_xp_items_required(find_minimum_xp_given_level(REGULAR_SKILL_LEVELS, 92), "", 5910258, "aGILITY", MEDIUM_PRISMATIC_LAMP_XP)
+if __name__ == "__main__":
+    # print(len(data["experience"]))
+    # print(len(data["level"]))
 
+    number_required, xp_gained, missing_experience, xp_gained_missing_experience = determine_xp_items_required(
+        find_minimum_xp_given_level(REGULAR_SKILL_LEVELS, 92), "", 5910258, "aGILITY", MEDIUM_PRISMATIC_LAMP_XP)
 
-print(f"you need {number_required} items and will gain {xp_gained:,}. you needed this {missing_experience}\nYou will"
-      f" overshoot by {xp_gained_missing_experience}")
-
+    print(
+        f"you need {number_required} items and will gain {xp_gained:,}. you needed this {missing_experience}\nYou will"
+        f" overshoot by {xp_gained_missing_experience}")
 
 
