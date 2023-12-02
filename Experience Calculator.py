@@ -1,10 +1,3 @@
-import math
-from collections import OrderedDict
-
-import pandas as pd
-import numpy as np
-from scipy.optimize import curve_fit
-import matplotlib.pyplot as plt
 
 # Your data
 from InvalidLevelException import InvalidLevelException
@@ -13,7 +6,7 @@ from UsefulLists import MEDIUM_PRISMATIC_LAMP_XP, REGULAR_SKILL_LEVELS, ELITE_LE
     MEDIUM_PRISMATIC_FALLEN_STAR_XP
 
 
-def find_level(skill_dict,xp):     # more accurate than using just level
+def find_level_given_experience(skill_dict, xp):     # more accurate than using just level
     """
     find a level based on giving a specific xp amount.
 
@@ -31,7 +24,7 @@ def find_level(skill_dict,xp):     # more accurate than using just level
         else:
             return previous_level
 
-def find_minimum_xp(skill_dict,level): # less accurate than using xp
+def find_minimum_xp_given_level(skill_dict, level): # less accurate than using xp
     """
     Find the minimum xp required for a level, given the level.
 
@@ -55,9 +48,9 @@ def validate_level(level, is_elite):
     """
     if type(level) is int:
         if not is_elite:
-            return validate_specific_level(level, 127, 0)
+            return check_to_see_if_levels_are_in_a_valid_range(level, 127, 0)
         else:
-            return validate_specific_level(level,151,0)
+            return check_to_see_if_levels_are_in_a_valid_range(level, 151, 0)
     else:
         if type(level) is str and level.to_lower() == "max":
             return "Max"
@@ -66,7 +59,7 @@ def validate_level(level, is_elite):
             raise ValueError(f"{level} is not within the acceptable range of {correct_level_range} or the value 'Max'")
 
 
-def validate_specific_level(level,max,min):
+def check_to_see_if_levels_are_in_a_valid_range(level, max, min):
     """
     this is used to shorten code. this is the main comparison logic for assuring the level is within a valid range.
 
@@ -96,13 +89,13 @@ def validate_experience(xp):
     else:
         raise ValueError(f"{xp} is not a valid integer")
 
-def determine_level_xp(levels_dict,experience,level):
+def determine_level_xp(skills_dict, experience, level):
     """
     a CYA function to assure the calculator has both level and experience to work from.
     especially useful when the user provides only half or no data. USE ONLY AFTER
     VALIDATING WITH CORRESPONDING VALIDATE FUNCTION
 
-    :param levels_dict: an orderedDict that contains the level(int):minimum(int) experience for that level.
+    :param skills_dict: an orderedDict that contains the level(int):minimum(int) experience for that level.
     :param experience: an int that describes the experience amount in the skill in question
     :param level: an int that describes the level in the skill in question
     :return: two ints, current_level and current_experience based on the given info from the user
@@ -111,11 +104,11 @@ def determine_level_xp(levels_dict,experience,level):
     current_experience = 0
     if level == "":
         # experience used, more accurate
-        current_level = find_level(levels_dict,experience)
+        current_level = find_level_given_experience(skills_dict, experience)
         current_experience = experience
     elif experience =="":
         # level used, less accurate
-        current_experience = find_minimum_xp(levels_dict,level)
+        current_experience = find_minimum_xp_given_level(skills_dict, level)
         current_level = level
     return current_level,current_experience
 
@@ -142,11 +135,11 @@ def determine_xp_items_required(tar_xp,level,experience,skill,item_xp_levels):
 
     number_required,xp_gained=count_xp_items(current_level,current_experience,tar_xp,current_skill_levels,item_xp_levels)
 
-    print(f"you need {number_required} items and will gain {xp_gained:,}. you needed this {missing_experience}\nYou will"
-          f" overshoot by {xp_gained-missing_experience}")
+
+    return number_required,xp_gained,missing_experience,xp_gained-missing_experience
 
 
-def count_xp_items(current_level,current_experience,target_xp,current_skills_levels,item_xp_levels):
+def count_xp_items(current_level, current_experience, target_xp, skill_dict, item_xp_dict):
     """
         used to determine the specific amount of experience items (like xp lamps, stars, etc) required to go from the
         current experience to a target level of experience
@@ -154,8 +147,8 @@ def count_xp_items(current_level,current_experience,target_xp,current_skills_lev
     :param current_level: int representing the current level of the skill
     :param current_experience: int representing the current xp in a skill
     :param target_xp: int the target amount of xp the user want's to reach
-    :param current_skills_levels: an orderedDict that has "Level:minimum experience for that level" pairs
-    :param item_xp_levels: an orderedDict that has "level:experience granted" pairs for the requested item
+    :param skill_dict: an orderedDict that has "Level:minimum experience for that level" pairs
+    :param item_xp_dict: an orderedDict that has "level:experience granted" pairs for the requested item
     :return: int that represent number of xp items required, float that represent xp
     """
     xp = current_experience
@@ -163,24 +156,26 @@ def count_xp_items(current_level,current_experience,target_xp,current_skills_lev
     curr_level = current_level
     number_of_xp_items = 0
     while xp < target_xp:
-        while xp < current_skills_levels[curr_level+1]:
+        while xp < skill_dict[curr_level + 1]:
             #print(f"xp is before addition is {xp}")
             #print(f"adding xp {item_xp_levels[curr_level]}")
-            xp +=item_xp_levels[curr_level]
-            xp_gained +=item_xp_levels[curr_level]
+            xp +=item_xp_dict[curr_level]
+            xp_gained +=item_xp_dict[curr_level]
             #print(f"xp is now {xp}")
             number_of_xp_items +=1
-        curr_level = find_level(current_skills_levels,xp)
+        curr_level = find_level_given_experience(skill_dict, xp)
         #print(f"this is {curr_level}")
     return number_of_xp_items,xp_gained
 
 
 #print(len(data["experience"]))
 #print(len(data["level"]))
-print(find_level(REGULAR_SKILL_LEVELS, 200000000 - 1))
-print(determine_xp_items_required(find_minimum_xp(REGULAR_SKILL_LEVELS,92),"",5910258,"aGILITY",MEDIUM_PRISMATIC_LAMP_XP))
-print(determine_xp_items_required(find_minimum_xp(REGULAR_SKILL_LEVELS,92),"",5910258,"aGILITY",
-                                  MEDIUM_PRISMATIC_FALLEN_STAR_XP))
+
+number_required,xp_gained,missing_experience,xp_gained_missing_experience = determine_xp_items_required(find_minimum_xp_given_level(REGULAR_SKILL_LEVELS, 92), "", 5910258, "aGILITY", MEDIUM_PRISMATIC_LAMP_XP)
+
+
+print(f"you need {number_required} items and will gain {xp_gained:,}. you needed this {missing_experience}\nYou will"
+      f" overshoot by {xp_gained_missing_experience}")
 
 
 
