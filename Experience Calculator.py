@@ -120,6 +120,16 @@ def determine_level_xp(levels_dict,experience,level):
     return current_level,current_experience
 
 def determine_xp_items_required(tar_xp,level,experience,skill,item_xp_levels):
+    """
+    used to determine the amount of experience items needed to reach a certain experience amount
+
+    :param tar_xp: int representing the target xp
+    :param level: int representing the current level
+    :param experience: int representing the current experience
+    :param skill: str used to determine if an elite skill is chosen
+    :param item_xp_levels: orderedDict that contains level:"experience granted that level" pairs
+    :return: str describing the amount needed
+    """
     current_skill_levels = {}
     if skill != "Invention":
         current_skill_levels = REGULAR_SKILL_LEVELS
