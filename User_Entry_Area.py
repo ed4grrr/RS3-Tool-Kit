@@ -34,13 +34,32 @@ class User_Entry_Area(Frame):
         self.target_level_entry.pack()
 
     def return_username(self):
-        return self.user_name_entry.get()
+        returnable = self.user_name_entry.get()
+        if returnable == "":
+            return 0
+        else:
+            return returnable
     def return_level(self):
-        return self.level_entry.get()
+        returnable = self.level_entry.get()
+        if returnable == "":
+            return 0
+        else:
+            return returnable
     def return_experience(self):
-        return self.experience_entry.get()
-
-    def reutrn_target_return_level(self):
-        return self.target_level_entry.get()
-    def return_target_return_experience(self):
-        return self.target_experience_entry.get()
+        returnable = self.experience_entry.get()
+        if returnable == "":
+            return 0
+        else:
+            return returnable
+    def reutrn_target_level(self):
+        returnable = self.target_level_entry.get()
+        if returnable == "":
+            return 0
+        else:
+            return returnable
+    def return_target_experience(self):
+        returnable = self.target_experience_entry.get()
+        if returnable == "":
+            return 0
+        else:
+            return returnable

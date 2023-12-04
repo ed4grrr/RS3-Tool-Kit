@@ -2,10 +2,13 @@ import tkinter
 from tkinter import Button
 
 import Experience_Calculator
+from InvalidExperienceException import InvalidExperienceException
+from InvalidLevelException import InvalidLevelException
 from Output_Entry_Frame import Output_Entry_Frame
 from Dropdown_Menu_Frame import Dropdown_Menu_Frame
 from User_Entry_Area import User_Entry_Area
 
+from UsefulLists import *
 
 class Experience_Lamp_GUI(tkinter.Tk):
     def __init__(self):
@@ -34,9 +37,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
 
         self.button = Button(
-            command=lambda
-                text=self.temp_storage_for_Output:
-            self.output_entry.edit_disabled_text_box((text)))
+            command=self.calculate_items)
 
         self.options = Dropdown_Menu_Frame(*row_button_names,row_button_names[0])
         self.options.pack()
@@ -48,7 +49,16 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
     def calculate_items(self):
 
-        self.temp_storage_for_Output = self.calculator.determine_xp_items_required(self.user_entry.
+        try:
+            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(int(self.user_entry.return_target_experience()),int(self.user_entry.return_level()),int(self.user_entry.return_experience()),
+                                                                                   "agility",MEDIUM_PRISMATIC_FALLEN_STAR_XP)
+            self.output_entry.edit_disabled_text_box(self.temp_storage_for_Output)
+        except InvalidLevelException as e:
+            pass
+        except InvalidExperienceException as e:
+            pass
+        except TypeError as e:
+            pass
 
 
 if __name__ == "__main__":
