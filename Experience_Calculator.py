@@ -118,12 +118,11 @@ class XP_Item_Calculator:
             current_level = level
         return current_level,current_experience
 
-    def determine_xp_items_required(self,tar_xp,target_level,level,experience,skill,item_xp_levels):
+    def determine_xp_items_required(self,tar_xp,level,experience,skill,item_xp_levels):
         """
         used to determine the amount of experience items needed to reach a certain experience amount
 
         :param tar_xp: int representing the target xp
-        :param tar_level: int representing the target level
         :param level: int representing the current level
         :param experience: int representing the current experience
         :param skill: str used to determine if an elite skill is chosen
