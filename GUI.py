@@ -3,7 +3,7 @@ from tkinter import Button
 
 import Experience_Calculator
 from Output_Entry_Frame import Output_Entry_Frame
-from Radio_Option_Frame import Radio_Option_Frame
+from Dropdown_Menu_Frame import Dropdown_Menu_Frame
 from User_Entry_Area import User_Entry_Area
 
 
@@ -11,11 +11,12 @@ class Experience_Lamp_GUI(tkinter.Tk):
     def __init__(self):
         super().__init__()
 
+        self.config(bg="black")
+        self.option_add("*Background", "black")
+        self.option_add("*Foreground", "white")
         self.calculator = Experience_Calculator.XP_Item_Calculator()
 
-        self.label = tkinter.Label(text="Edgar Was Here",
-                                   foreground="white",  # Set the text color to white
-                                   background="black")
+
 
         self.temp_storage_for_Output = "test"
 
@@ -23,35 +24,31 @@ class Experience_Lamp_GUI(tkinter.Tk):
         self.output_entry = Output_Entry_Frame()
         self.user_entry.pack()
 
-        radio_options = Radio_Option_Frame()
 
-        row1_button_names = ["Small Prismatic Lamp", "Medium Prismatic Lamp","Large Prismatic Lamp","Huge Prismatic Lamp",
-                            "Giant Prismatic Lamp"]
-        row2_button_names = ["Small Prismatic Fallen Star","Medium Prismatic Fallen Star","Large Prismatic Fallen Star",
+
+
+
+        row_button_names = ["Small Prismatic Lamp", "Medium Prismatic Lamp","Large Prismatic Lamp","Huge Prismatic Lamp",
+                            "Giant Prismatic Lamp","Small Prismatic Fallen Star","Medium Prismatic Fallen Star","Large Prismatic Fallen Star",
                              "Huge Prismatic Fallen Star","Giant Prismatic Fallen Star"]
-        for i in range(2):
-            radio_options.add_a_row()
 
-        for name in row1_button_names:
-            radio_options.add_a_dial(0,name)
-
-        for name in row2_button_names:
-            radio_options.add_a_dial(1,name)
-
-        radio_options.pack_radios()
-
-        radio_options.pack()
 
         self.button = Button(
             command=lambda
                 text=self.temp_storage_for_Output:
             self.output_entry.edit_disabled_text_box((text)))
 
-        self.label.pack()
+        self.options = Dropdown_Menu_Frame(*row_button_names,row_button_names[0])
+        self.options.pack()
+
         self.output_entry.pack(side=tkinter.RIGHT)
         self.button.pack()
 
         self.mainloop()
+
+    def calculate_items(self):
+
+        self.temp_storage_for_Output = self.calculator.determine_xp_items_required(self.user_entry.
 
 
 if __name__ == "__main__":
