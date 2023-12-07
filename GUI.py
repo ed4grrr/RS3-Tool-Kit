@@ -4,6 +4,7 @@ from tkinter import Button
 import Experience_Calculator
 from InvalidExperienceException import InvalidExperienceException
 from InvalidLevelException import InvalidLevelException
+from InvalidUserEntryException import InvalidUserEntryException
 from Output_Entry_Frame import Output_Entry_Frame
 from Dropdown_Menu_Frame import Dropdown_Menu_Frame
 from User_Entry_Area import User_Entry_Area
@@ -18,6 +19,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
         self.option_add("*Background", "black")
         self.option_add("*Foreground", "white")
         self.calculator = Experience_Calculator.XP_Item_Calculator()
+        self.is_elite = False
 
 
 
@@ -49,9 +51,52 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
     def calculate_items(self):
 
+
+
         try:
-            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(int(self.user_entry.return_target_experience()),int(self.user_entry.return_level()),int(self.user_entry.return_experience()),
-                                                                                   "agility",MEDIUM_PRISMATIC_FALLEN_STAR_XP)
+
+            user_entry_xp = self.user_entry.experience_entry.get()
+            try:
+                user_entry_xp = int(user_entry_xp)
+                self.calculator.validate_experience(user_entry_xp)
+
+            except ValueError:
+                user_entry_xp = ""
+
+            user_entry_level = self.user_entry.level_entry.get()
+            try:
+                user_entry_level = int(user_entry_level)
+                self.calculator.validate_level(is_elite=self.is_elite,level=user_entry_level)
+            except ValueError:
+                user_entry_level = ""
+
+            user_entry_target_experience = self.user_entry.target_experience_entry.get()
+            try:
+                user_entry_target_experience = int(user_entry_target_experience)
+                self.calculator.validate_experience(user_entry_target_experience)
+            except ValueError:
+                user_entry_target_experience = ""
+
+            user_entry_target_level = self.user_entry.target_level_entry.get()
+            try:
+                user_entry_target_level = int(user_entry_target_level)
+                self.calculator.validate_level(is_elite=self.is_elite,level=user_entry_target_level)
+                if user_entry_target_experience == "":
+                    if not self.is_elite:
+                        user_entry_target_experience = REGULAR_SKILL_LEVELS[user_entry_target_level]
+                    else:
+                        user_entry_target_experience = ELITE_LEVEL_SKILLS[user_entry_target_level]
+            except ValueError:
+                user_entry_target_level = ""
+
+
+
+            if user_entry_level == "" and user_entry_xp == "" or user_entry_target_level == "" and user_entry_target_experience =="":
+                self.output_entry.edit_disabled_text_box("User Entry is Invalid")
+                return
+
+
+            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(user_entry_target_experience,user_entry_target_level,user_entry_xp,False,MEDIUM_PRISMATIC_LAMP_XP)
             self.output_entry.edit_disabled_text_box(self.temp_storage_for_Output)
         except InvalidLevelException as e:
             pass

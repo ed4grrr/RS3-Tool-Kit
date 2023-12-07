@@ -1,0 +1,2 @@
+class InvalidUserEntryException(Exception):
+    pass
