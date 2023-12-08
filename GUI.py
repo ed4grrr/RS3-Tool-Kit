@@ -96,7 +96,8 @@ class Experience_Lamp_GUI(tkinter.Tk):
                 return
 
 
-            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(user_entry_target_experience,user_entry_target_level,user_entry_xp,False,MEDIUM_PRISMATIC_LAMP_XP)
+            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(user_entry_target_experience,
+                                                user_entry_target_level,user_entry_xp,False,STRING_DICT_DICT[self.options.return_item_selected()])
             self.output_entry.edit_disabled_text_box(self.temp_storage_for_Output)
         except InvalidLevelException as e:
             pass
