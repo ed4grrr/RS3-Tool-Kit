@@ -135,11 +135,12 @@ class XP_Item_Calculator:
         else:
             current_skill_levels = ELITE_LEVEL_SKILLS
 
-        current_level,current_experience=self.determine_level_xp(current_skill_levels,experience,level)
+        current_level = level
+        current_experience=experience
 
         missing_experience = tar_xp - current_experience
 
-        number_required,xp_gained=self.count_xp_items(current_level,current_experience,tar_xp,current_skill_levels,item_xp_levels)
+        number_required,xp_gained=self.count_xp_items(self.find_level_given_experience(current_skill_levels,current_experience),current_experience,tar_xp,current_skill_levels,item_xp_levels)
 
 
         return number_required,xp_gained,missing_experience,xp_gained-missing_experience

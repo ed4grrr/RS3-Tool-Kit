@@ -5,8 +5,7 @@ class Output_Entry_Frame(Frame):
     def __init__(self):
         super().__init__()
 
-        self.Output = tkinter.Text(height=20,
-                      width=50,
+        self.Output = tkinter.Text(
                       bg="black",
                       fg='white',
                       state="disabled")

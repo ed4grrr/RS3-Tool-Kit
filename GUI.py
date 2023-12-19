@@ -1,3 +1,4 @@
+import math
 import tkinter
 from tkinter import Button
 
@@ -20,6 +21,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
         self.option_add("*Foreground", "white")
         self.calculator = Experience_Calculator.XP_Item_Calculator()
         self.is_elite = False
+        self.RS_HISCORES_API_STRING = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
 
 
 
@@ -55,6 +57,8 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
         try:
 
+            user_entry_name = self.user_entry.user_name_entry.get()
+
             user_entry_xp = self.user_entry.experience_entry.get()
             try:
                 user_entry_xp = int(user_entry_xp)
@@ -63,12 +67,12 @@ class Experience_Lamp_GUI(tkinter.Tk):
             except ValueError:
                 user_entry_xp = ""
 
-            user_entry_level = self.user_entry.level_entry.get()
+            """user_entry_level = self.user_entry.level_entry.get()
             try:
                 user_entry_level = int(user_entry_level)
                 self.calculator.validate_level(is_elite=self.is_elite,level=user_entry_level)
             except ValueError:
-                user_entry_level = ""
+                user_entry_level = """""
 
             user_entry_target_experience = self.user_entry.target_experience_entry.get()
             try:
@@ -91,13 +95,19 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
 
 
-            if user_entry_level == "" and user_entry_xp == "" or user_entry_target_level == "" and user_entry_target_experience =="":
-                self.output_entry.edit_disabled_text_box("User Entry is Invalid")
+            if user_entry_xp == "" and user_entry_name == "" or user_entry_target_level == "" and user_entry_target_experience =="":
+                self.output_entry.edit_disabled_text_box("All inputs are empty!\nPlease fill in either your user name or current experience"
+                                                         " and either target level or target experience.")
                 return
 
 
-            self.temp_storage_for_Output = self.calculator.determine_xp_items_required(user_entry_target_experience,
+
+
+            number_required,xp_gained,missing_experience,overshoot = self.calculator.determine_xp_items_required(user_entry_target_experience,
                                                 user_entry_target_level,user_entry_xp,False,STRING_DICT_DICT[self.options.return_item_selected()])
+
+            self.temp_storage_for_Output = f"You will require {math.ceil( number_required):,} {self.options.return_item_selected()}(s).\nYou need {missing_experience:,} experience " \
+                                           f"and you will gain {math.ceil(xp_gained):,} experience.\nTherefore, you will overshoot you goal by about {math.ceil(overshoot):,} experience.\n"
             self.output_entry.edit_disabled_text_box(self.temp_storage_for_Output)
         except InvalidLevelException as e:
             pass

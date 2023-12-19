@@ -19,12 +19,13 @@ class User_Entry_Area(Frame):
         self.experience_entry = Entry(master=self.experience_frame)
         self.experience_entry.pack()
 
+        """     
         self.level_frame = Frame(self)
         self.level_label = Label(master=self.level_frame, text="Level:")
         self.level_label.pack()
         self.level_entry = Entry(master=self.level_frame)
         self.level_entry.pack()
-
+        """
         self.target_experience_frame = Frame(self)
         self.target_experience_label = Label(master=self.target_experience_frame, text="Target Experience:")
         self.target_experience_label.pack()
@@ -41,7 +42,7 @@ class User_Entry_Area(Frame):
         self.target_level_entry.pack()
 
         self.user_name_frame.pack(side=LEFT)
-        self.level_frame.pack(side=LEFT)
+        """self.level_frame.pack(side=LEFT)"""
         self.experience_frame.pack(side=LEFT)
         self.target_level_frame.pack(side=LEFT)
         self.target_experience_frame.pack(side=LEFT)
