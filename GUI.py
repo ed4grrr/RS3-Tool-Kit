@@ -87,7 +87,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
             user_entry_xp = ""
             if user_entry_name == "":
-                print(f"reached {print_test}")
+                print(f"reached  a {print_test}")
                 print_test += 1
                 user_entry_xp = self.user_entry.experience_entry.get()
                 try:
@@ -98,20 +98,20 @@ class Experience_Lamp_GUI(tkinter.Tk):
                     user_entry_xp = ""
             else:
 
-                print(f"reached {print_test}")
+                print(f"reached  b{print_test} {type(self.current_player_name)}   {type(user_entry_name)} {self.current_player_name == user_entry_name}")
                 print_test += 1
 
                 if self.current_player_name == user_entry_name:
-                    print(self.current_player_data[self.skill.item_selected][1])
-                    user_entry_xp = self.current_player_data[self.skill.item_selected][2]
+                    print(self.current_player_data[self.skill.item_selected.get()][1])
+                    user_entry_xp = self.current_player_data[self.skill.item_selected.get()][2]
                 else:
-                    print(f"reached {print_test}")
+                    print(f"reached  b2 {print_test}")
                     print_test += 1
 
                     self.output_entry.edit_disabled_text_box("Update Player Data before Calculating")
                     return
 
-            print(f"reached {print_test}")
+            print(f"reached c{print_test}")
             print_test += 1
             """user_entry_level = self.user_entry.level_entry.get()
             try:
@@ -139,7 +139,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
             except ValueError:
                 user_entry_target_level = ""
 
-            print(f"reached {print_test}")
+            print(f"reached d {print_test}")
             print_test += 1
 
 
@@ -163,7 +163,7 @@ class Experience_Lamp_GUI(tkinter.Tk):
         except InvalidExperienceException as e:
             pass
         except TypeError as e:
-            pass
+            print(e)
 
 
 if __name__ == "__main__":
