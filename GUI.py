@@ -64,6 +64,14 @@ class Experience_Lamp_GUI(tkinter.Tk):
 
         self.mainloop()
 
+
+    def dark_mode(self):
+        self.option_add("*Background", "black")
+        self.option_add("*Foreground", "white")
+    def light_mode(self):
+        self.option_add("*Background", "white")
+        self.option_add("*Foreground", "black")
+
     def get_hiscore_from_api(self):
         name_from_user = self.user_entry.user_name_entry.get()
         if name_from_user != "" and self.current_player_name != name_from_user:
