@@ -11,7 +11,8 @@ class Player_High_Score_API():
         super()
 
     def get_player(self,username):
-        api_request = urllib.request.Request('https://secure.runescape.com/m=hiscore/index_lite.ws?player=' + username)
+        clean_username = username.replace(" ", "_")
+        api_request = urllib.request.Request('https://secure.runescape.com/m=hiscore/index_lite.ws?player=' + clean_username)
 
         try:
             response = urllib.request.urlopen(api_request)

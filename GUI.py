@@ -1,7 +1,7 @@
 import math
 import tkinter
 from tkinter import Button, messagebox
-
+import File_Bar
 import Experience_Calculator
 import UsefulLists
 from InvalidExperienceException import InvalidExperienceException
@@ -32,6 +32,9 @@ class Experience_Lamp_GUI(tkinter.Tk):
         self.user_entry = User_Entry_Area()
         self.output_entry = Output_Entry_Frame()
         self.user_entry.pack()
+
+        self.file_bar = File_Bar.File_bar(self)
+        self.file_bar.pack()
 
 
 
